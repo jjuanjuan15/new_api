@@ -3,7 +3,7 @@ import os
 from services.service import funcion_elisa
 app = FastAPI()
 
-PASSWORD = os.getenv("PSW")
+PASSWORD = os.getenv("PSW", "putogordo12")
 
 API_KEY = "3e8d7f1c8b9a4f2e6d5a1b7c9e8f4a2d"
 def comprobar_password(password: str = Query(...)):
