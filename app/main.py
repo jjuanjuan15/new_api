@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, Header
 import os
-from services.auth import check_password
 from services.service import funcion_elisa
 app = FastAPI()
 
