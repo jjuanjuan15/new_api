@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, Header
 import os
-from services.service import funcion_elisa
+from services.service import funcion_elisa,funcion_putos
 app = FastAPI()
 
 PASSWORD = os.getenv("PSW", "putogordo12")
@@ -23,3 +23,6 @@ def usuarios():
 @app.get("/elisa", dependencies=[Depends(comprobar_password)])
 async def elisa():
     return await funcion_elisa()
+@app.get("/puto", dependencies=[Depends(comprobar_password)])
+async def putos():
+    return await funcion_putos()
