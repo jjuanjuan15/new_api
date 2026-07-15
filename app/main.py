@@ -8,9 +8,9 @@ import qrcode
 
 app = FastAPI()
 
-PASSWORD = os.getenv("PSW", "putogordo12")
+PASSWORD = os.getenv("PSW")
 
-API_KEY = "3e8d7f1c8b9a4f2e6d5a1b7c9e8f4a2d"
+API_KEY = os.getenv("API_KEY")
 def comprobar_password(password: str = Query(...)):
     if password != PASSWORD:
         raise HTTPException(status_code=401, detail="No autorizado")
