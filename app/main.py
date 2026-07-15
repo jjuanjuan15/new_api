@@ -1,14 +1,11 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, Header
+from fastapi.responses import FileResponse, StreamingResponse
 import os
+import io
 from services.service import funcion_elisa,funcion_putos
-from huggingface_hub import InferenceClient
+import qrcode
 
-app = FastAPI()
 
-client = InferenceClient(
-    provider="hf-inference",
-    api_key="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"
-)
 app = FastAPI()
 
 PASSWORD = os.getenv("PSW", "putogordo12")
@@ -34,16 +31,12 @@ async def elisa():
 @app.get("/puto", dependencies=[Depends(comprobar_password)])
 async def putos():
     return await funcion_putos()
-@app.get("/ia")
-async def ia(prompt: str):
-    respuesta = client.chat.completions.create(
-        model="HuggingFaceTB/SmolLM2-135M-Instruct",
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=100
-    )
+@app.get("/genqr")
+async def genqr(url: str):
+    img = qrcode.make(url)
 
-    return {
-        "respuesta": respuesta.choices[0].message.content
-    }
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    return StreamingResponse(buffer, media_type="image/png")
